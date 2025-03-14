@@ -1,0 +1,11 @@
+apiVersion: docling.github.io/v1alpha1
+kind: DoclingServ
+metadata:
+  labels:
+    app.kubernetes.io/name: docling-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: doclingserv-sample
+  namespace: docling
+spec:
+  imageReference: "quay.io/ds4sd/docling-serve:latest"
+  replicaCount: 1

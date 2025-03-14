@@ -1,0 +1,27 @@
+# permissions for end users to edit doclingservs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: docling-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: doclingserv-editor-role
+rules:
+- apiGroups:
+  - docling.github.io
+  resources:
+  - doclingservs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - docling.github.io
+  resources:
+  - doclingservs/status
+  verbs:
+  - get
