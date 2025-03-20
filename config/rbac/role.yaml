@@ -23,8 +23,10 @@ rules:
   - services
   verbs:
   - create
+  - delete
   - get
   - list
+  - update
   - watch
 - apiGroups:
   - docling.github.io
