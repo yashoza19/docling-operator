@@ -2,7 +2,6 @@ package reconcilers
 
 import (
 	"context"
-
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/go-logr/logr"
@@ -31,19 +30,29 @@ func NewServiceReconciler(client client.Client, log logr.Logger, scheme *runtime
 }
 
 func (r *ServiceReconciler) Reconcile(ctx context.Context, doclingServ *v1alpha1.DoclingServ) (bool, error) {
-	foundService := &corev1.Service{}
-	serviceName := doclingServ.Name + "-service"
+	service := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      doclingServ.Name + "-service",
+			Namespace: doclingServ.Namespace,
+		},
+	}
 
-	err := r.Get(ctx, types.NamespacedName{Name: serviceName, Namespace: doclingServ.Namespace}, foundService)
-	if err != nil && errors.IsNotFound(err) {
-		r.Log.Info("Creating a new Service", "Service", serviceName)
-		service := r.serviceForDoclingServ(doclingServ)
+	err := r.Client.Get(ctx, types.NamespacedName{Name: service.GetName(), Namespace: service.GetNamespace()}, service)
 
-		err = r.Create(ctx, service)
-		if err != nil {
-			r.Log.Error(err, "Failed to create new Service", "Service.Namespace", service.Namespace, "Service.Name", service.Name)
-			return true, err
+	if err == nil {
+		if err := r.Client.Update(ctx, service); err != nil {
+			r.Log.Error(err, "Failed to update Service", "Service", service.GetName())
+			return false, err
 		}
+	} else if errors.IsNotFound(err) {
+		service = r.serviceForDoclingServ(doclingServ)
+		if err := r.Client.Create(ctx, service); err != nil {
+			r.Log.Error(err, "Failed to create Service", "Service", service.GetName())
+			return false, err
+		}
+		_ = ctrl.SetControllerReference(doclingServ, service, r.Scheme)
+	} else {
+		return false, err
 	}
 
 	return false, nil
@@ -51,7 +60,7 @@ func (r *ServiceReconciler) Reconcile(ctx context.Context, doclingServ *v1alpha1
 
 func (r *ServiceReconciler) serviceForDoclingServ(doclingServ *v1alpha1.DoclingServ) *corev1.Service {
 	labels := labelsForDocling(doclingServ.Name)
-	service := &corev1.Service{
+	return &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      doclingServ.Name + "-service",
 			Namespace: doclingServ.Namespace,
@@ -63,13 +72,9 @@ func (r *ServiceReconciler) serviceForDoclingServ(doclingServ *v1alpha1.DoclingS
 				{
 					Name:       "http",
 					Port:       5001,
-					TargetPort: intstr.FromInt(5001),
+					TargetPort: intstr.FromInt32(5001),
 				},
 			},
 		},
 	}
-
-	_ = ctrl.SetControllerReference(doclingServ, service, r.Scheme)
-
-	return service
 }
