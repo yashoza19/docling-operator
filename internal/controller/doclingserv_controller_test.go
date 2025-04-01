@@ -52,7 +52,12 @@ var _ = Describe("DoclingServ Controller", func() {
 						Namespace: "default",
 					},
 					Spec: doclinggithubiov1alpha1.DoclingServSpec{
-						ImageReference: "registry/image:tag",
+						APIServer: &doclinggithubiov1alpha1.APIServer{
+							Image: "registry/image:tag",
+						},
+						Engine: &doclinggithubiov1alpha1.Engine{
+							Local: &doclinggithubiov1alpha1.Local{},
+						},
 					},
 				}
 				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
@@ -81,6 +86,29 @@ var _ = Describe("DoclingServ Controller", func() {
 			Expect(err).NotTo(HaveOccurred())
 			// TODO(user): Add more specific assertions depending on your controller's reconciliation logic.
 			// Example: If you expect a certain status condition after reconciliation, verify it here.
+		})
+		It("should fail CRD validation", func() {
+			By("creating a custom resource for the Kind DoclingServ that includes both `Local` and `KFP` resources")
+			err := k8sClient.Get(ctx, typeNamespacedName, doclingserv)
+			if err != nil && errors.IsNotFound(err) {
+				resource := &doclinggithubiov1alpha1.DoclingServ{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      resourceName,
+						Namespace: "default",
+					},
+					Spec: doclinggithubiov1alpha1.DoclingServSpec{
+						APIServer: &doclinggithubiov1alpha1.APIServer{
+							Image: "registry/image:tag",
+						},
+						Engine: &doclinggithubiov1alpha1.Engine{
+							Local: &doclinggithubiov1alpha1.Local{},
+							KFP:   &doclinggithubiov1alpha1.KFP{},
+						},
+					},
+				}
+				err := k8sClient.Create(ctx, resource)
+				Expect(err).To(HaveOccurred())
+			}
 		})
 	})
 })

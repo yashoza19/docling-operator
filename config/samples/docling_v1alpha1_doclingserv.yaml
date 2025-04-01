@@ -5,7 +5,10 @@ metadata:
     app.kubernetes.io/name: docling-operator
     app.kubernetes.io/managed-by: kustomize
   name: doclingserv-sample
-  namespace: docling
 spec:
-  imageReference: "quay.io/docling-project/docling-serve:latest"
-  replicaCount: 1
+  apiServer:
+    image: "quay.io/docling-project/docling-serve:latest"
+    enableUI: false
+    instances: 1
+  route:
+    enabled: false
