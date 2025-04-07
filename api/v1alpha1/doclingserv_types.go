@@ -45,6 +45,17 @@ type DoclingServSpec struct {
 type DoclingServStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	// Conditions describe the state of the operator's reconciliation functionality.
+	// +patchMergeKey=type
+	// +patchStrategy=merge
+	// +optional
+	// Conditions is a list of conditions related to operator reconciliation
+	Conditions []metav1.Condition `json:"conditions,omitempty"  patchStrategy:"merge" patchMergeKey:"type"`
+
+	// ObservedGeneration is the generation last observed by the controller
+	// +optional
+	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
 }
 
 // +kubebuilder:object:root=true
