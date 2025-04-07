@@ -37,22 +37,71 @@ spec:
           metadata:
             type: object
           spec:
-            description: DoclingServSpec defines the desired state of DoclingServ
+            description: DoclingServSpec defines the desired state of DoclingServ.
             properties:
-              createRoute:
-                type: boolean
-              createService:
-                type: boolean
-              enableUI:
-                type: boolean
-              imageReference:
-                type: string
-              replicaCount:
-                format: int32
-                minimum: 1
-                type: integer
+              apiServer:
+                description: APIServer configures a docling-serve workload
+                properties:
+                  enableUI:
+                    description: EnableUI determines whether to run the docling-serve
+                      ui.
+                    type: boolean
+                  image:
+                    description: Image specifics which docling-serve container image
+                      to deploy.
+                    type: string
+                  instances:
+                    default: 1
+                    description: Instances represents the desired number of docling-serve
+                      workloads to create.
+                    format: int32
+                    type: integer
+                required:
+                - image
+                type: object
+              engine:
+                description: Engine defines which type of docling-serve compute engine
+                  to deploy. The selected engine will run all the async jobs.
+                properties:
+                  kfp:
+                    description: KFP configures a Kubeflow Pipeline engine.
+                    properties:
+                      endpoint:
+                        description: 'The Kubeflow Pipeline endpoint location, example:
+                          https://NAME.NAMESPACE.svc.cluster.local:8888'
+                        type: string
+                    required:
+                    - endpoint
+                    type: object
+                  local:
+                    description: Local configures the docling-serve engine.
+                    properties:
+                      numWorkers:
+                        default: 2
+                        description: NumWorkers the desired number workers/threads
+                          processing the incoming tasks.
+                        format: int32
+                        type: integer
+                    required:
+                    - numWorkers
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: Only a Local or KFP Engine are allowed to be configured
+                    not both
+                  rule: (has(self.local) && !has(self.kfp)) || (!has(self.local) &&
+                    has(self.kfp))
+              route:
+                description: Route configures an OpenShift route, exposed Docling
+                  API outside the cluster.
+                properties:
+                  enabled:
+                    description: Enabled determines whether to create a route.
+                    type: boolean
+                type: object
             required:
-            - imageReference
+            - apiServer
+            - engine
             type: object
           status:
             description: DoclingServStatus defines the observed state of DoclingServ
