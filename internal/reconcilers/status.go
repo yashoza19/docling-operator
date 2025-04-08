@@ -35,7 +35,6 @@ func NewStatusReconciler(client client.Client, log logr.Logger, scheme *runtime.
 }
 
 func (r *StatusReconciler) Reconcile(ctx context.Context, doclingServ *v1alpha1.DoclingServ) (bool, error) {
-
 	log := r.Log.WithValues("Status.ObservedGeneration", doclingServ.Generation)
 	doclingServ.Status.ObservedGeneration = doclingServ.Generation
 
@@ -78,7 +77,7 @@ func (r *StatusReconciler) commitStatus(ctx context.Context, doclingServ *v1alph
 
 func (r *StatusReconciler) reconcileDoclingDeploymentStatus(ctx context.Context, doclingServ *v1alpha1.DoclingServ, log logr.Logger) {
 	deployment := appsv1.Deployment{}
-	err := r.Client.Get(ctx, types.NamespacedName{Name: deploymentName, Namespace: doclingServ.Namespace}, &deployment)
+	err := r.Get(ctx, types.NamespacedName{Name: deploymentName, Namespace: doclingServ.Namespace}, &deployment)
 	if err != nil {
 		log.Error(err, "failed to get doclingServ deployment")
 		condition := metav1.Condition{
@@ -138,7 +137,7 @@ func (r *StatusReconciler) reconcileDoclingDeploymentStatus(ctx context.Context,
 
 func (r *StatusReconciler) reconcileDoclingServiceStatus(ctx context.Context, doclingServ *v1alpha1.DoclingServ, log logr.Logger) {
 	service := corev1.Service{}
-	err := r.Client.Get(ctx, types.NamespacedName{Name: doclingServ.Name + "-service", Namespace: doclingServ.Namespace}, &service)
+	err := r.Get(ctx, types.NamespacedName{Name: doclingServ.Name + "-service", Namespace: doclingServ.Namespace}, &service)
 	if err != nil {
 		log.Error(err, "failed to get doclingServ service")
 		condition := metav1.Condition{
@@ -196,7 +195,7 @@ func (r *StatusReconciler) reconcileDoclingServiceStatus(ctx context.Context, do
 
 func (r *StatusReconciler) reconcileDoclingRouteStatus(ctx context.Context, doclingServ *v1alpha1.DoclingServ, log logr.Logger) {
 	route := routev1.Route{}
-	err := r.Client.Get(ctx, types.NamespacedName{Name: doclingServ.Name + "-route", Namespace: doclingServ.Namespace}, &route)
+	err := r.Get(ctx, types.NamespacedName{Name: doclingServ.Name + "-route", Namespace: doclingServ.Namespace}, &route)
 	if err != nil {
 		log.Error(err, "failed to get doclingServ route")
 		condition := metav1.Condition{
