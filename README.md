@@ -5,13 +5,12 @@ The Docling Operator distributes [docling-serve](https://github.com/docling-proj
 The Docling Operator configures the docling-serve API Deployment and related Secret, ConfigMap, Service. It also configures the docling-kfp-job Data Science Pipeline for running the distributed Docling conversion. This is launched and inspected from docling-serve using the k8s api. With docling-serve you can deploy with different compute engines.
 With the docling operator you can configure which compute engine to use for the deployment.
 
-
-![Docling Operator Diagram](https://private-user-images.githubusercontent.com/97102151/423880025-2b0f985d-23b2-4421-bf5f-989dacd80df3.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUyNDgyOTUsIm5iZiI6MTc0NTI0Nzk5NSwicGF0aCI6Ii85NzEwMjE1MS80MjM4ODAwMjUtMmIwZjk4NWQtMjNiMi00NDIxLWJmNWYtOTg5ZGFjZDgwZGYzLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIxVDE1MDYzNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPThmYjg1N2NkN2I4NmNiNTkxZjJjNWI3YTYyMjBiOTc2ZWUyZWQ0Zjk4NDY0NzhlYjIxZjdhMDA0ZGIwYzUzMTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Ikca23nSuHLfWJaNK9rPTGvVEo79eyqjeV5v5mJUBQQ)
+![Docling Operator Diagram](docs/assests/docling-diagram.png)
 
 ## Getting Started
 
 ### Prerequisites
-- go version v1.22.0+
+- go version v1.24.1+
 - docker version 17.03+.
 - kubectl version v1.11.3+.
 - Access to a Kubernetes v1.11.3+ cluster.
