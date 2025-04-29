@@ -17,7 +17,7 @@ With the docling operator you can configure which compute engine to use for the 
 
 ### Kubeflow Pipeline Engine
 
-The engine is set to local by default. To deploy a Kubeflow Pipeline engine, adjust the custome resource at `config/samples/docling_v1alpha1_doclingserv.yaml` and add a Kubeflow endpoint.
+The engine is set to local by default. To deploy a Kubeflow Pipeline engine, adjust the custom resource at `config/samples/docling_v1alpha1_doclingserve.yaml` and add a Kubeflow endpoint.
 
 ```
 engine:
@@ -69,7 +69,7 @@ privileges or be logged in as admin.
 You can apply the samples (examples) from the config/sample:
 
 ```sh
-kubectl apply -k config/samples/docling_v1alpha1_doclingserv.yaml
+kubectl apply -k config/samples/docling_v1alpha1_doclingserve.yaml
 ```
 
 >**NOTE**: Ensure that the samples has default values to test it out.
@@ -78,7 +78,7 @@ kubectl apply -k config/samples/docling_v1alpha1_doclingserv.yaml
 **Delete the instances (CRs) from the cluster:**
 
 ```sh
-kubectl delete -k config/samples/docling_v1alpha1_doclingserv.yaml
+kubectl delete -k config/samples/docling_v1alpha1_doclingserve.yaml
 ```
 
 **Delete the APIs(CRDs) from the cluster:**
