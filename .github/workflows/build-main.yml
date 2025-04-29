@@ -32,7 +32,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPO }}/docling-operator
-          tags: ${{ github.sha }} latest
+          tags: ${{ github.sha }} latest ${{ env.RELEASE_TAG }}
           build-args: |
             quay_expiration=1w
             release_tag=${{ env.RELEASE_TAG }}
