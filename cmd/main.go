@@ -20,11 +20,11 @@ import (
 	"context"
 	"os"
 
-	"github.io/opdev/docling-operator/cmd/internal/controller"
+	"github.io/opdev/docling-operator/cmd/internal/manager"
 )
 
 func main() {
-	if err := controller.Run(context.TODO()); err != nil {
+	if err := manager.Run(context.TODO()); err != nil {
 		os.Exit(1)
 	}
 }
