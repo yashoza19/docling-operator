@@ -48,7 +48,7 @@ func (r *DeploymentReconciler) Reconcile(ctx context.Context, doclingServe *v1al
 				Containers: []corev1.Container{
 					{
 						Image: doclingServe.Spec.APIServer.Image,
-						Name:  "docling-serv",
+						Name:  "docling-serve",
 						Command: []string{
 							"docling-serve",
 							"run",
