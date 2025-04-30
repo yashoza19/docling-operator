@@ -53,6 +53,12 @@ spec:
       kind: DoclingServe
       name: doclingserves.docling.github.io
       specDescriptors:
+      - description: ConfigMapName represents the config map name that contains additional
+          configurations.
+        displayName: ConfigMap Name
+        path: apiServer.configMapName
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
       - description: EnableUI determines whether to run the docling-serve ui.
         displayName: Enable UI
         path: apiServer.enableUI
