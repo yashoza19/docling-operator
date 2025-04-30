@@ -74,10 +74,16 @@ func (r *DeploymentReconciler) Reconcile(ctx context.Context, doclingServe *v1al
 		}
 
 		if doclingServe.Spec.Engine.KFP != nil {
-			deployment.Spec.Template.Spec.Containers[0].Env = append(deployment.Spec.Template.Spec.Containers[0].Env, []corev1.EnvVar{{
-				Name:  "DOCLING_SERVE_ENG_KFP_ENDPOINT",
-				Value: doclingServe.Spec.Engine.KFP.Endpoint,
-			}}...)
+			deployment.Spec.Template.Spec.Containers[0].Env = append(deployment.Spec.Template.Spec.Containers[0].Env,
+				[]corev1.EnvVar{
+					{
+						Name:  "DOCLING_SERVE_ENG_KFP_ENDPOINT",
+						Value: doclingServe.Spec.Engine.KFP.Endpoint,
+					},
+					{
+						Name:  "DOCLING_SERVE_ENG_KIND",
+						Value: "kfp",
+					}}...)
 		}
 
 		if len(doclingServe.Spec.APIServer.ConfigMapName) > 0 {
