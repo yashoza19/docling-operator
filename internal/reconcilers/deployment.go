@@ -9,6 +9,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -53,7 +54,42 @@ func (r *DeploymentReconciler) Reconcile(ctx context.Context, doclingServe *v1al
 							"docling-serve",
 							"run",
 						},
+						Ports: []corev1.ContainerPort{
+							{
+								ContainerPort: 5001,
+								Name:          "http",
+								Protocol:      corev1.ProtocolTCP,
+							},
+						},
 						ImagePullPolicy: corev1.PullIfNotPresent,
+						LivenessProbe: &corev1.Probe{
+							ProbeHandler: corev1.ProbeHandler{
+								HTTPGet: &corev1.HTTPGetAction{
+									Path:   "/health",
+									Port:   intstr.FromString("http"),
+									Scheme: corev1.URISchemeHTTP,
+								},
+							},
+							InitialDelaySeconds: 3,
+							TimeoutSeconds:      4,
+							PeriodSeconds:       10,
+							SuccessThreshold:    1,
+							FailureThreshold:    5,
+						},
+						ReadinessProbe: &corev1.Probe{
+							ProbeHandler: corev1.ProbeHandler{
+								HTTPGet: &corev1.HTTPGetAction{
+									Path:   "/health",
+									Port:   intstr.FromString("http"),
+									Scheme: corev1.URISchemeHTTP,
+								},
+							},
+							InitialDelaySeconds: 10,
+							TimeoutSeconds:      2,
+							PeriodSeconds:       5,
+							SuccessThreshold:    1,
+							FailureThreshold:    3,
+						},
 					},
 				},
 			},
