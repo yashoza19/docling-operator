@@ -37,6 +37,11 @@ spec:
         path: apiServer.instances
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:podCount
+      - description: Resources
+        displayName: Resources
+        path: apiServer.resources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
       - description: 'The Kubeflow Pipeline endpoint location, example: https://NAME.NAMESPACE.svc.cluster.local:8888'
         displayName: Kubeflow Pipeline Endpoint
         path: engine.kfp.endpoint
