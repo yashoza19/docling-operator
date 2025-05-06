@@ -2,7 +2,7 @@ name: Build Main
 
 on:
   push:
-    branches: [ main, ghactions ]
+    branches: [ main, ghactions, test1 ]
 
 jobs:
   build-main:

@@ -67,7 +67,7 @@ func (r *DeploymentReconciler) Reconcile(ctx context.Context, doclingServe *v1al
 								HTTPGet: &corev1.HTTPGetAction{
 									Path:   "/health",
 									Port:   intstr.FromString("http"),
-									Scheme: corev1.URISchemeHTTPS,
+									Scheme: corev1.URISchemeHTTP,
 								},
 							},
 							InitialDelaySeconds: 3,
@@ -81,7 +81,7 @@ func (r *DeploymentReconciler) Reconcile(ctx context.Context, doclingServe *v1al
 								HTTPGet: &corev1.HTTPGetAction{
 									Path:   "/health",
 									Port:   intstr.FromString("http"),
-									Scheme: corev1.URISchemeHTTPS,
+									Scheme: corev1.URISchemeHTTP,
 								},
 							},
 							InitialDelaySeconds: 10,
