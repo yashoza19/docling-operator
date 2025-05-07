@@ -131,6 +131,10 @@ func (r *DeploymentReconciler) Reconcile(ctx context.Context, doclingServe *v1al
 			}}...)
 		}
 
+		if doclingServe.Spec.APIServer.Resources != nil {
+			deployment.Spec.Template.Spec.Containers[0].Resources = *doclingServe.Spec.APIServer.Resources
+		}
+
 		_ = ctrl.SetControllerReference(doclingServe, deployment, r.Scheme)
 
 		return nil

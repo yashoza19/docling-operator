@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -55,6 +56,11 @@ type APIServer struct {
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="ConfigMap Name",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:text"}
 	// +kubebuilder:validation:Optional
 	ConfigMapName string `json:"configMapName,omitempty"`
+
+	// Resources
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Resources",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:resourceRequirements"}
+	// +kubebuilder:validation:Optional
+	Resources *v1.ResourceRequirements `json:"resources,omitempty"`
 }
 
 // Route configures an OpenShift route, exposed Docling API outside the cluster.
