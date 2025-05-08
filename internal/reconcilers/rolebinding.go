@@ -36,11 +36,11 @@ func (r *RoleBindingReconciler) Reconcile(ctx context.Context, doclingServe *v1a
 			Kind:     "Role",
 			Name:     doclingServe.Name + "-role",
 		}
-		rolebinding.Subjects = []rbacv1.Subject{
+		rolebinding.Subjects = []rbacv1.Subject{{
 			Kind:      "ServiceAccount",
 			Name:      doclingServe.Name + "-serviceaccount",
 			Namespace: doclingServe.Namespace,
-		}
+		}}
 
 		_ = ctrl.SetControllerReference(doclingServe, rolebinding, r.Scheme)
 		return nil
