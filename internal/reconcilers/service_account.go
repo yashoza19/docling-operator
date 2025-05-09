@@ -36,7 +36,7 @@ func (r *ServiceAccountReconciler) Reconcile(ctx context.Context, doclingServe *
 		return nil
 	})
 	if err != nil {
-		log.Error(err, "Error creating Service Account", "ServiceAccount.Namespace", serviceAccount.Namespace, "ServiceAccount.Name", serviceAccount.Name)
+		log.Error(err, "Error creating ServiceAccount", "ServiceAccount.Namespace", serviceAccount.Namespace, "ServiceAccount.Name", serviceAccount.Name)
 		return true, err
 	}
 
