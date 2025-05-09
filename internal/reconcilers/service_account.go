@@ -18,6 +18,8 @@ type ServiceAccountReconciler struct {
 	Scheme *runtime.Scheme
 }
 
+const serviceAccountName = "docling-serve"
+
 func NewServiceAccountReconciler(client client.Client, scheme *runtime.Scheme) *ServiceAccountReconciler {
 	return &ServiceAccountReconciler{
 		Client: client,
@@ -27,18 +29,17 @@ func NewServiceAccountReconciler(client client.Client, scheme *runtime.Scheme) *
 
 func (r *ServiceAccountReconciler) Reconcile(ctx context.Context, doclingServe *v1alpha1.DoclingServe) (bool, error) {
 	log := logf.FromContext(ctx)
-	serviceaccount := &corev1.ServiceAccount{ObjectMeta: metav1.ObjectMeta{Name: doclingServe.Name + "-serviceaccount", Namespace: doclingServe.Namespace}}
-	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, serviceaccount, func() error {
-		labels := labelsForDocling(doclingServe.Name)
-		serviceaccount.Labels = labels
-		_ = ctrl.SetControllerReference(doclingServe, serviceaccount, r.Scheme)
+	serviceAccount := &corev1.ServiceAccount{ObjectMeta: metav1.ObjectMeta{Name: serviceAccountName, Namespace: doclingServe.Namespace}}
+	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, serviceAccount, func() error {
+		serviceAccount.Labels = labelsForDocling(doclingServe.Name)
+		_ = ctrl.SetControllerReference(doclingServe, serviceAccount, r.Scheme)
 		return nil
 	})
 	if err != nil {
-		log.Error(err, "Error creating Service Account", "ServiceAccount.Namespace", serviceaccount.Namespace, "ServiceAccount.Name", serviceaccount.Name)
+		log.Error(err, "Error creating Service Account", "ServiceAccount.Namespace", serviceAccount.Namespace, "ServiceAccount.Name", serviceAccount.Name)
 		return true, err
 	}
 
-	log.Info("Successfully created ServiceAccount", "ServiceAccount.Namespace", serviceaccount.Namespace, "ServiceAccount.Name", serviceaccount.Name)
+	log.Info("Successfully created ServiceAccount", "ServiceAccount.Namespace", serviceAccount.Namespace, "ServiceAccount.Name", serviceAccount.Name)
 	return false, nil
 }
